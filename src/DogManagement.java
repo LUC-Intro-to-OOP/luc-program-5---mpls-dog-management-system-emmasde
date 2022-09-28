@@ -39,10 +39,10 @@ Style - Proper use of comments, spacing, in program; use of descriptive variable
 Program is submitted by the due date listed and pushed to assigned GitHub Repository; Repository contains a minimum of three commits.
 
 	
-    [REPLACE MY INFORMATION WITH YOURS]
+    
     Course: COMP 170, Fall 1 2022
-    System: Visual Studio Code, Windows 10
-    Author: C. Fulton
+    System: Visual Studio Code, macOS 11.2.1
+    Author: Emma Dean
 */
 
 import java.util.Scanner; //Importing Scanner Class
@@ -51,23 +51,42 @@ public class DogManagement {
      * Global Declaration for parallel arrays and Scanner Object
      */
     //DECLARING PARALEL ARRAYS OUTSIDE OF MAIN METHOD TO HOLD DOG DATA use the static keyword
+    final static int dogArraysCapacity = 12;
+
+    static int[] dogIDArray = new int[dogArraysCapacity];
+    static String[] dogNameArray = new String[dogArraysCapacity];
+    static double[] dogWeightArray = new double[dogArraysCapacity];
+    static int[] dogAgeArray = new int[dogArraysCapacity];
+    
+    static int menuChoice;
+    static int dogArraysSize = 0;  //this will increment inside CREATE and UPDATE methods
 
 
     //DECLARING SCANNER OBJECT
-    static Scanner scn = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        
+        //call welcome()
+        welcome();
+        //call displayPrompt() and assign returned menuOption to menuChoice
+        menuChoice = displayPrompt();
+        //if menuChoice = 1,2,3 call corresponding method
+        if (menuChoice == 1) {
+            dogArraysSize = createDog(dogArraysCapacity, dogArraysSize);
+        }
+        //if menuChoice = 4, print "Program has ended!" and throw exception
+        //if menuChoice != 1,2,3,4, print "Invalid menu option" and re-call displayPrompt()
+        //call displayPrompt()
         
 
     }
 
-    //Welcome method that outputs introductory text explaining program
+    //WELCOME METHOD
     public static void welcome(){
         System.out.println("Welcome, this program allows for a care attendant to be able to create, retrieve and update a dog record from the system.");
     }
 
-    //Method to display prompt and return integer values
+    //PROMPT METHOD
     public static int displayPrompt(){
         //Local Variables
         int menuOption;
@@ -80,12 +99,76 @@ public class DogManagement {
         
         System.out.print("Enter selection here --> ");
         //INPUT
-        menuOption = Integer.parseInt(scn.nextLine());
+        menuOption = Integer.parseInt(input.nextLine());
 
         return menuOption;
     }
 
-  
+    //CREATE METHOD (1)
+    /* input: dogID, dogName, dogWeight, dogAge
+     * output: dogID, dogName, dogWeight, dogAge
+     * replace with doc comment (5.15)
+     * see 5.10- updating arrays in methods
+     * return currentSize and assign to dogsArraySize in call
+     * called like: dogArraysSize = createDog(dogArraysCapacity, dogArraysSize)
+     */
+    public static int createDog(int arraysCapacity, int currentSize){ //*TESTED*
+        //declare local variables
+        int newDogID;
+        String newDogName;
+        double newDogWeight;
+        int newDogAge;
+
+        // Check that array has space 
+        if (currentSize == arraysCapacity) {
+            System.out.println("Sorry, the maximum number of dogs has been reached. Cannot create new dog.");    
+            return currentSize;  
+        }
+
+        // If array has space, add the element to the arrays and increment array(s) size
+        System.out.println("You have selected to enter a new dog.");
+        System.out.print("Enter dog ID #: ");
+        newDogID = input.nextInt();
+        System.out.print("Enter dog Name: ");
+        newDogName = input.next();
+        System.out.print("Enter dog weight: ");
+        newDogWeight = input.nextDouble();
+        System.out.print("Enter dog age: ");
+        newDogAge = input.nextInt();
+
+        dogIDArray[currentSize] = newDogID;
+        dogNameArray[currentSize] = newDogName;
+        dogWeightArray[currentSize] = newDogWeight;
+        dogAgeArray[currentSize] = newDogAge;
+        ++currentSize; 
+        return currentSize;
+    }
+
+
+    //DISPLAY METHOD (2)
+    /* input: dogID
+     * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
+     * replace with doc comment (5.15)
+     * void return
+     */
+    
+
+
+
+    //UPDATE METHOD (3)
+    /* input: dog ID, dogName, dogWeight, dogAge
+     * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
+     * replace with doc comment (5.15)
+     * void return
+     */
+
+    //PRINT current dogs (called in DISPLAY and UPDATE methods) *TESTED*
+    public static void printDogArrays() {
+        int i;  //local variable
+        for (i = 0; i < dogArraysSize; i++){
+            System.out.println("ID #: " + dogIDArray[i] + " for " + dogNameArray[i]);
+            }
+    }
     
 
 }
