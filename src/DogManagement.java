@@ -120,7 +120,7 @@ public class DogManagement {
         return menuOption;
     }
 
-    //CREATE METHOD (1) //*TESTED*
+    //CREATE METHOD (1) **TESTED**
     /* input: dogID, dogName, dogWeight, dogAge
      * output: dogID, dogName, dogWeight, dogAge
      * replace with doc comment (5.15)
@@ -161,7 +161,7 @@ public class DogManagement {
     }
 
 
-    //DISPLAY METHOD (2)
+    //DISPLAY METHOD (2) **TESTED**
     /* input: dogID
      * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
      * replace with doc comment (5.15)
@@ -187,7 +187,7 @@ public class DogManagement {
         }
     }
 
-    //SEARCH METHOD
+    //SEARCH METHOD **TESTED**
     public static int search(int dogArray[], int dogChoice) {
         int i;
 
@@ -207,7 +207,7 @@ public class DogManagement {
 
 
 
-    //PRINT current dogs (called in DISPLAY and UPDATE methods) *TESTED*
+    //PRINT current dogs (called in DISPLAY and UPDATE methods) **TESTED**
     public static void printDogArrays() {
         int i;  //local variable
         for (i = 0; i < dogArraysSize; i++){
