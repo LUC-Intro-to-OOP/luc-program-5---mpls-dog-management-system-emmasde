@@ -39,10 +39,10 @@ Style - Proper use of comments, spacing, in program; use of descriptive variable
 Program is submitted by the due date listed and pushed to assigned GitHub Repository; Repository contains a minimum of three commits.
 
 	
-    [REPLACE MY INFORMATION WITH YOURS]
+    
     Course: COMP 170, Fall 1 2022
-    System: Visual Studio Code, Windows 10
-    Author: C. Fulton
+    System: Visual Studio Code, macOS 11.2.1
+    Author: Emma Dean
 */
 
 import java.util.Scanner; //Importing Scanner Class
@@ -51,23 +51,64 @@ public class DogManagement {
      * Global Declaration for parallel arrays and Scanner Object
      */
     //DECLARING PARALEL ARRAYS OUTSIDE OF MAIN METHOD TO HOLD DOG DATA use the static keyword
+    final static int dogArraysCapacity = 12;
+
+    static int[] dogIDArray = new int[dogArraysCapacity];
+    static String[] dogNameArray = new String[dogArraysCapacity];
+    static double[] dogWeightArray = new double[dogArraysCapacity];
+    static int[] dogAgeArray = new int[dogArraysCapacity];
+    
+    static int menuChoice;
+    static int dogArraysSize = 0;  //this will increment inside CREATE and UPDATE methods
 
 
     //DECLARING SCANNER OBJECT
-    static Scanner scn = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
+        //call welcome()
+        welcome();
+
+        do {
+            //call displayPrompt() and assign returned menuOption to menuChoice
+            menuChoice = displayPrompt();
+                //if menuChoice = 1,2,3 call corresponding method
+                if (menuChoice == 1) {
+                    dogArraysSize = createDog(dogArraysCapacity, dogArraysSize);
+                }
+                else if (menuChoice == 2) {
+                    displayDog();
+                }
+                else if (menuChoice == 3) {
+                    updateDog();
+                }
+                //if menuChoice != 1,2,3,4, print "Invalid menu option" and re-call displayPrompt()
+                else if (menuChoice != 4) {
+                    System.out.println("Invalid menu option.");
+                }
+        //if menuChoice = 4, print "Program has ended!" and throw exception
+        } while (menuChoice != 4); // sentinel value
         
+        //end
+        System.out.println("Program has ended!");
+       
         
 
     }
 
-    //Welcome method that outputs introductory text explaining program
+    /** WELCOME METHOD
+     * simply prints welcome statement
+     */
     public static void welcome(){
         System.out.println("Welcome, this program allows for a care attendant to be able to create, retrieve and update a dog record from the system.");
     }
 
-    //Method to display prompt and return integer values
+    /** PROMPT METHOD
+     * prints menu options and takes scanner input
+     * 
+     * @param       none
+     * @return int  menuOption selected by user
+     */
     public static int displayPrompt(){
         //Local Variables
         int menuOption;
@@ -80,12 +121,153 @@ public class DogManagement {
         
         System.out.print("Enter selection here --> ");
         //INPUT
-        menuOption = Integer.parseInt(scn.nextLine());
+        menuOption = input.nextInt();   //original: menuOption = Integer.parseInt(input.nextLine())
 
         return menuOption;
     }
 
-  
+    /** CREATE METHOD (1)
+     * creates new dog when menuOption '1' selected. First checks dog arrays have space by comparing currentSize and arraysCapacity values.
+     * if no space, prints message and returns currentSize. If space, takes user input for ID, name, weight, and age, increments currentSize and returns.
+     * 
+     * @param arraysCapacity    a final value representing the oversize array's capacity
+     * @param currentSize       a value representing the current size of the oversize array(s)
+     * @return int              increments and returns new currentSize when new dog created
+     */
+    public static int createDog(int arraysCapacity, int currentSize){ 
+        //declare local variables
+        int newDogID;
+        String newDogName;
+        double newDogWeight;
+        int newDogAge;
+
+        // Check that array has space 
+        if (currentSize == arraysCapacity) {
+            System.out.println("Sorry, the maximum number of dogs has been reached. Cannot create new dog.");    
+            return currentSize;  
+        }
+
+        // If array has space, add the element to the arrays and increment array(s) size
+        System.out.println("You have selected to enter a new dog.");
+        System.out.print("Enter dog ID #: ");
+        newDogID = input.nextInt();
+        System.out.print("Enter dog Name: ");
+        newDogName = input.next();
+        System.out.print("Enter dog weight: ");
+        newDogWeight = input.nextDouble();
+        System.out.print("Enter dog age: ");
+        newDogAge = input.nextInt();
+
+        dogIDArray[currentSize] = newDogID;
+        dogNameArray[currentSize] = newDogName;
+        dogWeightArray[currentSize] = newDogWeight;
+        dogAgeArray[currentSize] = newDogAge;
+        ++currentSize; 
+        return currentSize;
+    }
+
+    /** DISPLAY METHOD (2)
+     * Allows user to view the details of any dog currently stored in the parallel arrays when menuOption '2' is selected.
+     * Calls printDogArrays() method to print dogs, and takes user selection for which dog to view additional data for.
+     * 
+     * @param   none
+     * @see     printDogArrays() method
+     */
+    public static void displayDog() {
+        int dogIDChoice = 0;
+        int dogChoiceIndex;
+
+        printDogArrays();
+        System.out.print("Please enter ID # to from above to display record: ");
+        dogIDChoice = input.nextInt();
+        dogChoiceIndex = search(dogIDArray, dogIDChoice);   //call search
+
+        if (dogChoiceIndex == -1) {
+            System.out.println("Id # does not match dog id in system");
+        }
+        else {
+            System.out.println("ID #: " + dogIDArray[dogChoiceIndex]);
+            System.out.println("Name #: " + dogNameArray[dogChoiceIndex]);
+            System.out.println("Weight #: " + dogWeightArray[dogChoiceIndex]);
+            System.out.println("Age #: " + dogAgeArray[dogChoiceIndex]);
+        }
+    }
+
+    /** UPDATE METHOD (3)
+     * Allows user to change the details of any dog currently stored in the parallel arrays when menuOption '3' is selected.
+     * Calls printDogArrays() method to print dogs, and takes user selection for which dog to update.
+     * Takes user input for each data point, overwriting previously saved data in corresponding arrays.
+     * 
+     * @param   none
+     * @see     printDogArrays() method
+     */
+    public static void updateDog() {
+        int dogIDChoice = 0;
+        int dogChoiceIndex;
+        int newDogID;
+        String newDogName;
+        double newDogWeight;
+        int newDogAge;
+
+        printDogArrays();
+        System.out.print("Please enter ID # to from above to update record: ");
+        dogIDChoice = input.nextInt();
+        dogChoiceIndex = search(dogIDArray, dogIDChoice);   //call search
+        
+        if (dogChoiceIndex == -1) {
+            System.out.println("Id # does not match dog id in system");
+        }
+        else {
+            System.out.println("You have selected to update " + dogNameArray[dogChoiceIndex]);
+            System.out.print("Enter dog ID #: ");
+            newDogID = input.nextInt();
+            System.out.print("Enter dog Name: ");
+            newDogName = input.next();
+            System.out.print("Enter dog weight: ");
+            newDogWeight = input.nextDouble();
+            System.out.print("Enter dog age: ");
+            newDogAge = input.nextInt();
+
+            dogIDArray[dogChoiceIndex] = newDogID;
+            dogNameArray[dogChoiceIndex] = newDogName;
+            dogWeightArray[dogChoiceIndex] = newDogWeight;
+            dogAgeArray[dogChoiceIndex] = newDogAge;
+        
+        }
+    }
+
+    /** PRINT DOGS METHOD
+     * Prints IDs and Names of currently stored dogs. 
+     * Not called in main() directly, only in other methods.
+     * 
+     * @param   none
+     * @see     displayDog() and updateDog() methods
+     */
+    public static void printDogArrays() {
+        int i;  //local variable
+        for (i = 0; i < dogArraysSize; i++){
+            System.out.println("ID #: " + dogIDArray[i] + " for " + dogNameArray[i]);
+        }
+    }
     
+    /** SEARCH METHOD
+     * Binary search method which inspects an int array for an int value; if value found
+     * method returns its index, otherwise returns -1. Not called in main() directly, only in other methods.
+     * 
+     * @param   dogArray[]  an array to inspect
+     * @param   dogChoice   value to search for
+     * @return  int         index of value if found, otherwise -1
+     * @see                 displayDog() and updateDog() methods
+     */
+    public static int search(int dogArray[], int dogChoice) {
+        int i;
+
+        for (i = 0; i < dogArray.length; ++i) {
+            if (dogArray[i] == dogChoice) {
+                return i;
+            }
+        }
+        return -1;
+    }    
 
 }
