@@ -68,15 +68,31 @@ public class DogManagement {
     public static void main(String[] args) throws Exception {
         //call welcome()
         welcome();
-        //call displayPrompt() and assign returned menuOption to menuChoice
-        menuChoice = displayPrompt();
-        //if menuChoice = 1,2,3 call corresponding method
-        if (menuChoice == 1) {
-            dogArraysSize = createDog(dogArraysCapacity, dogArraysSize);
-        }
+
+        //LOOP?
+        do {
+            //call displayPrompt() and assign returned menuOption to menuChoice
+            menuChoice = displayPrompt();
+                //if menuChoice = 1,2,3 call corresponding method
+                if (menuChoice == 1) {
+                    dogArraysSize = createDog(dogArraysCapacity, dogArraysSize);
+                }
+                else if (menuChoice == 2) {
+                    displayDog();
+                }
+                else if (menuChoice == 3) {
+                    //FIXME call update
+                }
+                //if menuChoice != 1,2,3,4, print "Invalid menu option" and re-call displayPrompt()
+                else if (menuChoice != 4) {
+                    System.out.println("Invalid menu option.");
+                }
         //if menuChoice = 4, print "Program has ended!" and throw exception
-        //if menuChoice != 1,2,3,4, print "Invalid menu option" and re-call displayPrompt()
-        //call displayPrompt()
+        } while (menuChoice != 4); // sentinel value
+        
+        //end
+        System.out.println("Program has ended!");
+       
         
 
     }
@@ -99,12 +115,12 @@ public class DogManagement {
         
         System.out.print("Enter selection here --> ");
         //INPUT
-        menuOption = Integer.parseInt(input.nextLine());
+        menuOption = input.nextInt();   //original: menuOption = Integer.parseInt(input.nextLine())
 
         return menuOption;
     }
 
-    //CREATE METHOD (1)
+    //CREATE METHOD (1) //*TESTED*
     /* input: dogID, dogName, dogWeight, dogAge
      * output: dogID, dogName, dogWeight, dogAge
      * replace with doc comment (5.15)
@@ -112,7 +128,7 @@ public class DogManagement {
      * return currentSize and assign to dogsArraySize in call
      * called like: dogArraysSize = createDog(dogArraysCapacity, dogArraysSize)
      */
-    public static int createDog(int arraysCapacity, int currentSize){ //*TESTED*
+    public static int createDog(int arraysCapacity, int currentSize){ 
         //declare local variables
         int newDogID;
         String newDogName;
@@ -151,16 +167,45 @@ public class DogManagement {
      * replace with doc comment (5.15)
      * void return
      */
-    
+    public static void displayDog() {
+        int dogIDChoice = 0;
+        int dogChoiceIndex;
 
+        printDogArrays();
+        System.out.print("Please enter ID # to from above to display record: ");
+        dogIDChoice = input.nextInt();
+        dogChoiceIndex = search(dogIDArray, dogIDChoice);   //call search
 
+        if (dogChoiceIndex == -1) {
+            System.out.println("Id # does not match dog id in system");
+        }
+        else {
+            System.out.println("ID #: " + dogIDArray[dogChoiceIndex]);
+            System.out.println("Name #: " + dogNameArray[dogChoiceIndex]);
+            System.out.println("Weight #: " + dogWeightArray[dogChoiceIndex]);
+            System.out.println("Age #: " + dogAgeArray[dogChoiceIndex]);
+        }
+    }
 
+    //SEARCH METHOD
+    public static int search(int dogArray[], int dogChoice) {
+        int i;
+
+        for (i = 0; i < dogArray.length; ++i) {
+            if (dogArray[i] == dogChoice) { //can use "==" here?
+                return i;
+            }
+        }
+        return -1;
+    }
     //UPDATE METHOD (3)
     /* input: dog ID, dogName, dogWeight, dogAge
      * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
      * replace with doc comment (5.15)
      * void return
      */
+
+
 
     //PRINT current dogs (called in DISPLAY and UPDATE methods) *TESTED*
     public static void printDogArrays() {
