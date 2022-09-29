@@ -96,12 +96,19 @@ public class DogManagement {
 
     }
 
-    //WELCOME METHOD
+    /** WELCOME METHOD
+     * simply prints welcome statement
+     */
     public static void welcome(){
         System.out.println("Welcome, this program allows for a care attendant to be able to create, retrieve and update a dog record from the system.");
     }
 
-    //PROMPT METHOD
+    /** PROMPT METHOD
+     * prints menu options and takes scanner input
+     * 
+     * @param       none
+     * @return int  menuOption selected by user
+     */
     public static int displayPrompt(){
         //Local Variables
         int menuOption;
@@ -119,13 +126,13 @@ public class DogManagement {
         return menuOption;
     }
 
-    //CREATE METHOD (1) **TESTED**
-    /* input: dogID, dogName, dogWeight, dogAge
-     * output: dogID, dogName, dogWeight, dogAge
-     * replace with doc comment (5.15)
-     * see 5.10- updating arrays in methods
-     * return currentSize and assign to dogsArraySize in call
-     * called like: dogArraysSize = createDog(dogArraysCapacity, dogArraysSize)
+    /** CREATE METHOD (1)
+     * creates new dog when menuOption '1' selected. First checks dog arrays have space by comparing currentSize and arraysCapacity values.
+     * if no space, prints message and returns currentSize. If space, takes user input for ID, name, weight, and age, increments currentSize and returns.
+     * 
+     * @param arraysCapacity    a final value representing the oversize array's capacity
+     * @param currentSize       a value representing the current size of the oversize array(s)
+     * @return int              increments and returns new currentSize when new dog created
      */
     public static int createDog(int arraysCapacity, int currentSize){ 
         //declare local variables
@@ -159,12 +166,12 @@ public class DogManagement {
         return currentSize;
     }
 
-
-    //DISPLAY METHOD (2) **TESTED**
-    /* input: dogID
-     * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
-     * replace with doc comment (5.15)
-     * void return
+    /** DISPLAY METHOD (2)
+     * Allows user to view the details of any dog currently stored in the parallel arrays when menuOption '2' is selected.
+     * Calls printDogArrays() method to print dogs, and takes user selection for which dog to view additional data for.
+     * 
+     * @param   none
+     * @see     printDogArrays() method
      */
     public static void displayDog() {
         int dogIDChoice = 0;
@@ -186,12 +193,13 @@ public class DogManagement {
         }
     }
 
-
-    //UPDATE METHOD (3) **TESTED**
-    /* input: dog ID, dogName, dogWeight, dogAge
-     * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
-     * replace with doc comment (5.15)
-     * void return
+    /** UPDATE METHOD (3)
+     * Allows user to change the details of any dog currently stored in the parallel arrays when menuOption '3' is selected.
+     * Calls printDogArrays() method to print dogs, and takes user selection for which dog to update.
+     * Takes user input for each data point, overwriting previously saved data in corresponding arrays.
+     * 
+     * @param   none
+     * @see     printDogArrays() method
      */
     public static void updateDog() {
         int dogIDChoice = 0;
@@ -228,7 +236,13 @@ public class DogManagement {
         }
     }
 
-    //PRINT current dogs (called in DISPLAY and UPDATE methods) **TESTED**
+    /** PRINT DOGS METHOD
+     * Prints IDs and Names of currently stored dogs. 
+     * Not called in main() directly, only in other methods.
+     * 
+     * @param   none
+     * @see     displayDog() and updateDog() methods
+     */
     public static void printDogArrays() {
         int i;  //local variable
         for (i = 0; i < dogArraysSize; i++){
@@ -236,7 +250,15 @@ public class DogManagement {
         }
     }
     
-    //SEARCH METHOD (called in DISPLAY and UPDATE methods) **TESTED**
+    /** SEARCH METHOD
+     * Binary search method which inspects an int array for an int value; if value found
+     * method returns its index, otherwise returns -1. Not called in main() directly, only in other methods.
+     * 
+     * @param   dogArray[]  an array to inspect
+     * @param   dogChoice   value to search for
+     * @return  int         index of value if found, otherwise -1
+     * @see                 displayDog() and updateDog() methods
+     */
     public static int search(int dogArray[], int dogChoice) {
         int i;
 
