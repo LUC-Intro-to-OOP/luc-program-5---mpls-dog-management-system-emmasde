@@ -69,7 +69,6 @@ public class DogManagement {
         //call welcome()
         welcome();
 
-        //LOOP?
         do {
             //call displayPrompt() and assign returned menuOption to menuChoice
             menuChoice = displayPrompt();
@@ -81,7 +80,7 @@ public class DogManagement {
                     displayDog();
                 }
                 else if (menuChoice == 3) {
-                    //FIXME call update
+                    updateDog();
                 }
                 //if menuChoice != 1,2,3,4, print "Invalid menu option" and re-call displayPrompt()
                 else if (menuChoice != 4) {
@@ -187,33 +186,66 @@ public class DogManagement {
         }
     }
 
-    //SEARCH METHOD **TESTED**
-    public static int search(int dogArray[], int dogChoice) {
-        int i;
 
-        for (i = 0; i < dogArray.length; ++i) {
-            if (dogArray[i] == dogChoice) { //can use "==" here?
-                return i;
-            }
-        }
-        return -1;
-    }
-    //UPDATE METHOD (3)
+    //UPDATE METHOD (3) **TESTED**
     /* input: dog ID, dogName, dogWeight, dogAge
      * output: printDogArrays();, new dogID, new dogName, new dogWeight, new dogAge
      * replace with doc comment (5.15)
      * void return
      */
+    public static void updateDog() {
+        int dogIDChoice = 0;
+        int dogChoiceIndex;
+        int newDogID;
+        String newDogName;
+        double newDogWeight;
+        int newDogAge;
 
+        printDogArrays();
+        System.out.print("Please enter ID # to from above to update record: ");
+        dogIDChoice = input.nextInt();
+        dogChoiceIndex = search(dogIDArray, dogIDChoice);   //call search
+        
+        if (dogChoiceIndex == -1) {
+            System.out.println("Id # does not match dog id in system");
+        }
+        else {
+            System.out.println("You have selected to update " + dogNameArray[dogChoiceIndex]);
+            System.out.print("Enter dog ID #: ");
+            newDogID = input.nextInt();
+            System.out.print("Enter dog Name: ");
+            newDogName = input.next();
+            System.out.print("Enter dog weight: ");
+            newDogWeight = input.nextDouble();
+            System.out.print("Enter dog age: ");
+            newDogAge = input.nextInt();
 
+            dogIDArray[dogChoiceIndex] = newDogID;
+            dogNameArray[dogChoiceIndex] = newDogName;
+            dogWeightArray[dogChoiceIndex] = newDogWeight;
+            dogAgeArray[dogChoiceIndex] = newDogAge;
+        
+        }
+    }
 
     //PRINT current dogs (called in DISPLAY and UPDATE methods) **TESTED**
     public static void printDogArrays() {
         int i;  //local variable
         for (i = 0; i < dogArraysSize; i++){
             System.out.println("ID #: " + dogIDArray[i] + " for " + dogNameArray[i]);
-            }
+        }
     }
     
+    //SEARCH METHOD (called in DISPLAY and UPDATE methods) **TESTED**
+    public static int search(int dogArray[], int dogChoice) {
+        int i;
+
+        for (i = 0; i < dogArray.length; ++i) {
+            if (dogArray[i] == dogChoice) {
+                return i;
+            }
+        }
+        return -1;
+    }    
 
 }
